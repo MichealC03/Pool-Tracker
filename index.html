@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pool Night Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Familjen+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+
+<header>
+  <div class="logo" aria-hidden="true"></div>
+  <h1>Pool Night Tracker<small>Who's running the table?</small></h1>
+  <div class="authbar"><span class="conn"><i id="connDot"></i><span id="connText">Connecting…</span></span>
+</div>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Game type">
+  <button class="tab" role="tab" data-mode="cutthroat">Cutthroat</button>
+  <button class="tab" role="tab" data-mode="solos">Solos</button>
+  <button class="tab" role="tab" data-mode="doubles">Doubles</button>
+</nav>
+
+<main>
+  <section class="panel leader" id="leader" aria-live="polite"></section>
+
+  <div class="grid2">
+    <section class="panel" id="logPanel">
+      <h2>Log a Game</h2>
+      <p class="hint" id="modeHint" style="margin:-8px 0 14px"></p>
+      <div id="singlesLog">
+        <div class="step">
+          <label class="t">1 · Who played?</label>
+          <div class="chips" id="playedChips"></div>
+        </div>
+        <div class="step">
+          <label class="t">2 · Who won?</label>
+          <div class="chips" id="winnerChips"></div>
+        </div>
+      </div>
+      <div id="doublesLog" hidden>
+        <div class="step"><label class="t">Team 1</label><div class="chips" id="team0"></div></div>
+        <div class="step"><label class="t">Team 2</label><div class="chips" id="team1"></div></div>
+        <div class="step"><label class="t">Who won?</label><div class="chips" id="winTeams"></div></div>
+      </div>
+      <p class="hint" id="logHint" style="margin:0 0 14px"></p>
+      <button id="saveGame" disabled>Record game</button>
+    </section>
+
+    <section class="panel" id="playerPanel">
+      <h2>Players</h2>
+      <label class="t" for="newName">Add a player</label>
+      <div class="row">
+        <input type="text" id="newName" placeholder="Name" maxlength="24" autocomplete="off">
+        <button id="addPlayer">Add</button>
+      </div>
+      <div class="mini">
+        <label>Starting wins<input type="number" id="newW" min="0" value="0"></label>
+        <label>Starting games<input type="number" id="newG" min="0" value="0"></label>
+      </div>
+      <p class="hint" id="startHint"></p>
+    </section>
+  </div>
+
+  <section class="panel">
+    <div class="tools">
+      <h2 style="margin:0" id="boardTitle">Leaderboard</h2>
+      <div class="seg" role="group" aria-label="Rank by">
+        <button id="byWins">Most wins</button>
+        <button id="byPct" class="on">Win %</button>
+      </div>
+    </div>
+    <div id="board"></div>
+  </section>
+
+  <section class="panel">
+    <h2 id="histTitle">Recent Games</h2>
+    <ul class="hist" id="hist"></ul>
+  </section>
+</main>
+
+<footer>
+  <span>Synced live across devices.</span><span class="sp"></span>
+  <button class="ghost" id="exportBtn">Export</button>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="app.js"></script>
+<script src="background.js"></script>
+</body>
+</html>
