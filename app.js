@@ -151,13 +151,14 @@ $('saveGame').onclick=()=>{
   let game,winners;
   if(mode==='doubles'){
     winners=[...teams[winTeam]];
-    game={t:Date.now(),mode,players:[...teams[0],...teams[1]],teams:[[...teams[0]],[...teams[1]]],winners,winner:winners.join(' & ')};
+    game={t:gameTime(),mode,players:[...teams[0],...teams[1]],team1:[...teams[0]],team2:[...teams[1]],winners,winner:winners.join(' & ')};
   }else{
     winners=[winner];
-    game={t:Date.now(),mode,players:[...played],winner,winners};
+    game={t:gameTime(),mode,players:[...played],winner,winners};
   }
-  db.collection('pool_games').add(game).catch(fail);
+  try{db.collection('pool_games').add(game).catch(fail)}catch(e){fail(e);return}
   celebrate(winners);
+  whenTouched=false;setNow();
   winner=null;winTeam=null;
   if(mode==='doubles')teams=[new Set(),new Set()];
   render();
@@ -236,3 +237,30 @@ function celebrate(winners){
   const m=document.createElement('div');m.className='fxmsg';m.textContent=who+' Won!';layer.appendChild(m);
   setTimeout(()=>layer.remove(),6000);
 }
+
+
+/* ---------- game time (defaults to now, adjustable) ---------- */
+let whenTouched=false;
+const pad=n=>String(n).padStart(2,'0');
+const toDate=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const toTime=d=>`${pad(d.getHours())}:${pad(d.getMinutes())}`;
+function whenValue(){
+  const d=new Date(`${$('gDate').value}T${$('gTime').value||'00:00'}`);
+  return isNaN(d)?new Date():d;
+}
+function gameTime(){return whenValue().getTime()}
+function showWhen(){
+  const d=whenValue(),now=new Date(),days=Math.round((new Date(now.getFullYear(),now.getMonth(),now.getDate())-new Date(d.getFullYear(),d.getMonth(),d.getDate()))/864e5);
+  const time=d.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
+  const day=days===0?'Today':days===1?'Yesterday':d.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'});
+  $('whenLabel').textContent=whenTouched?`Logged as ${day}, ${time}.`:`Using the current time, rounded down to 5 min (${time}).`;
+}
+function setNow(){const d=new Date();d.setMinutes(d.getMinutes()-d.getMinutes()%5,0,0);$('gDate').value=toDate(d);$('gTime').value=toTime(d);showWhen()}
+['gDate','gTime'].forEach(id=>$(id).addEventListener('input',()=>{whenTouched=true;showWhen()}));
+$('whenNow').onclick=()=>{whenTouched=false;setNow()};
+document.querySelectorAll('[data-nudge]').forEach(b=>b.onclick=()=>{
+  const d=whenValue();d.setMinutes(d.getMinutes()+(+b.dataset.nudge));
+  $('gDate').value=toDate(d);$('gTime').value=toTime(d);whenTouched=true;showWhen();
+});
+setNow();
+setInterval(()=>{if(!whenTouched)setNow()},20000);

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pool Night Tracker</title>
+<title>DT Pool Tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Familjen+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
@@ -13,7 +13,7 @@
 
 <header>
   <div class="logo" aria-hidden="true"></div>
-  <h1>Pool Night Tracker<small>Who's running the table?</small></h1>
+  <h1>DT Pool Tracker<small>Who's running the table?</small></h1>
   <div class="authbar"><span class="conn"><i id="connDot"></i><span id="connText">Connecting…</span></span>
 </div>
 </header>
@@ -45,6 +45,22 @@
         <div class="step"><label class="t">Team 1</label><div class="chips" id="team0"></div></div>
         <div class="step"><label class="t">Team 2</label><div class="chips" id="team1"></div></div>
         <div class="step"><label class="t">Who won?</label><div class="chips" id="winTeams"></div></div>
+      </div>
+      <div class="step">
+        <label class="t">When?</label>
+        <div class="when">
+          <input type="date" id="gDate" aria-label="Game date">
+          <input type="time" id="gTime" step="300" aria-label="Game time">
+          <button type="button" class="chip" id="whenNow">Now</button>
+        </div>
+        <div class="when nudge">
+          <button type="button" class="chip" data-nudge="-15">−15m</button>
+          <button type="button" class="chip" data-nudge="-60">−1h</button>
+          <button type="button" class="chip" data-nudge="-180">−3h</button>
+          <button type="button" class="chip" data-nudge="-1440">−1 day</button>
+          <button type="button" class="chip" data-nudge="15">+15m</button>
+        </div>
+        <p class="hint" id="whenLabel"></p>
       </div>
       <p class="hint" id="logHint" style="margin:0 0 14px"></p>
       <button id="saveGame" disabled>Record game</button>
@@ -86,6 +102,7 @@
   <span>Synced live across devices.</span><span class="sp"></span>
   <button class="ghost" id="exportBtn">Export</button>
 </footer>
+<div class="credit">🎱 Built by <b>Mike Callahan</b></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>

@@ -125,3 +125,18 @@ footer .sp{flex:1}
   font:400 1.35rem var(--display);letter-spacing:.08em;padding:11px 14px;border-radius:12px}
 .tab.on{background:var(--gold);color:#241a05;border-color:var(--gold)}
 @media(max-width:520px){.tab{font-size:1.1rem;padding:10px 6px}}
+
+/* ---------- when picker ---------- */
+.when{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.when.nudge{margin-top:8px}
+.when input[type=date],.when input[type=time]{
+  width:auto;flex:1 1 130px;min-width:0;padding:10px 12px;border-radius:10px;border:1px solid var(--line);
+  background:rgba(0,0,0,.3);color:var(--chalk);font:500 1rem var(--body);color-scheme:dark;accent-color:var(--gold)}
+.when input::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.85;filter:invert(.85) sepia(1) saturate(3) hue-rotate(5deg)}
+.when .chip{font:500 .88rem var(--body);padding:7px 12px}
+.when .chip:hover{border-color:var(--gold);color:var(--gold-soft)}
+
+/* ---------- credit ---------- */
+.credit{position:relative;z-index:2;text-align:center;padding:4px 16px 38px;color:var(--chalk-dim);
+  font:500 .78rem var(--body);letter-spacing:.18em;text-transform:uppercase}
+.credit b{color:var(--gold-soft);font-weight:700}
